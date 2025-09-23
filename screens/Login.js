@@ -5,7 +5,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../src/config/firebaseConfig';
 
 export default function Login({ navigation }) {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
@@ -43,23 +43,22 @@ export default function Login({ navigation }) {
     <View style={styles.container}>
       <Image source={require('../assets/logo.png')} style={styles.logo} />
       <Text style={styles.title}>Iniciar sesión</Text>
-
-      <Text style={styles.label}>Correo</Text>
+      
+      <Text style={styles.label}> <FontAwesome name="user" size={20} color="#ccc"/> Usuario</Text>
       <View style={styles.inputContainer}>
-        <FontAwesome name="envelope" size={20} color="#ccc" style={styles.icon} />
+        
         <TextInput
           style={styles.input}
-          placeholder="Ingrese su correo"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
+          placeholder="Nombre de usuario"
+          value={username}
+          onChangeText={setUsername}
+          keyboardType="default"
           autoCapitalize="none"
         />
       </View>
 
-      <Text style={styles.label}>Contraseña</Text>
+      <Text style={styles.label}> <FontAwesome name="key" size={20} color="#ccc" style={styles.icon} /> Contraseña</Text>
       <View style={styles.inputContainer}>
-        <FontAwesome name="lock" size={20} color="#ccc" style={styles.icon} />
         <TextInput
           style={styles.input}
           placeholder="Ingrese su contraseña"
@@ -92,9 +91,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   logo: {
-    width: 100,
-    height: 100,
+    width: 250,
+    height: 250,
     marginBottom: 20,
+    border: 1,
+
   },
   title: {
     fontSize: 24,

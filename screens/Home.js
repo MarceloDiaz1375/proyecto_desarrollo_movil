@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
 import { signOut } from 'firebase/auth';
 import { auth } from '../src/config/firebaseConfig';
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function Home({ navigation }) {
 
@@ -16,13 +17,15 @@ export default function Home({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
-      <Image source={require('../assets/logo.png')} style={styles.logo} />
-      <Text style={styles.title}>Bienvenido a la aplicación</Text>
-      <TouchableOpacity style={styles.button} onPress={handleLogOut}>
-        <Text style={styles.buttonText}>Cerrar sesión</Text>
-      </TouchableOpacity>
-    </View>
+    <LinearGradient colors={["#4a56e2", "#64bae8"]} style={styles.container}>
+      
+        <Image source={require('../assets/logo.png')} style={styles.logo} />
+        <Text style={styles.title}>Bienvenido a la aplicación</Text>
+        <TouchableOpacity style={styles.button} onPress={handleLogOut}>
+          <Text style={styles.buttonText}>Cerrar sesión</Text>
+        </TouchableOpacity>
+      
+    </LinearGradient>
   );
 }
 
@@ -46,11 +49,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   button: {
-    backgroundColor: '#32da22ff',
-    paddingVertical: 10,
-    paddingHorizontal: 40,
-    borderRadius: 5,
-    marginTop: 20,
+    backgroundColor: "#05f7c2ff",
+    paddingVertical: 12,
+    borderRadius: 25,
+    alignItems: "center",
+    marginTop: 10,
+    marginHorizontal: 1,
   },
   buttonText: {
     color: '#e01168ff',

@@ -6,12 +6,47 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  Alert
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome } from "@expo/vector-icons";
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../src/config/firebaseConfig';
 
-export default function LoginScreen() {
+export default function Login({ navigation }) {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+
+  const handleLogin = async () => {
+    if (!username || !password) {
+      Alert.alert("Error", "Por favor ingrese ambos campos.");
+      return;
+    }
+
+    try {
+      await signInWithEmailAndPassword(auth, username, password);
+      Alert.alert("Login exitoso", "Has iniciado sesión correctamente.");
+      navigation.reset({ index: 0, routes: [{ name: 'Home' }] }); 
+    } catch (error) {
+      let errorMessage = "Hubo un problema al iniciar sesión.";
+      switch (error.code) {
+        // case 'auth/invalid-email':
+        //   errorMessage = "El formato del correo electrónico no es válido.";
+        //   break;
+        case 'auth/wrong-password':
+          errorMessage = "La contraseña es incorrecta.";
+          break;
+        case 'auth/user-not-found':
+          errorMessage = "No se encontró un usuario con este correo.";
+          break;
+        case 'auth/network-request-failed':
+          errorMessage = "Error de conexión, por favor intenta más tarde.";
+          break;
+      }
+      Alert.alert("Error", errorMessage);
+    }
+  };
 
   return (
     <LinearGradient colors={["#4a56e2", "#64bae8"]} style={styles.container}>
@@ -32,25 +67,27 @@ export default function LoginScreen() {
         // end={{ x: 1, y: 1 }}
       >
         {/* Usuario */}
-        <Text style={styles.label}>Usuario</Text>
+        <Text style={styles.label}> <FontAwesome name="user" size={18} color="#ffffffff" style={styles.icon} /> Usuario</Text>
         <View style={styles.inputGroup}>
-          <FontAwesome name="user" size={18} color="#555" style={styles.icon} />
           <TextInput
-            placeholder="Nombre de usuario"
             style={styles.input}
-            placeholderTextColor="#888"
+            placeholder="Nombre de usuario"
+            value={username}
+            onChangeText={setUsername}
+            keyboardType="default"
+            autoCapitalize="none"
           />
         </View>
 
         {/* Contraseña */}
-        <Text style={styles.label}>Contraseña</Text>
+        <Text style={styles.label}> <FontAwesome name="key" size={18} color="#ffffffff" style={styles.icon} /> Contraseña</Text>
         <View style={styles.inputGroup}>
-          <FontAwesome name="lock" size={18} color="#555" style={styles.icon} />
           <TextInput
-            placeholder="Contraseña"
-            secureTextEntry={!showPassword}
             style={styles.input}
-            placeholderTextColor="#888"
+            placeholder="Ingrese su contraseña"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={!showPassword}
           />
           <TouchableOpacity
             onPress={() => setShowPassword(!showPassword)}
@@ -65,14 +102,17 @@ export default function LoginScreen() {
         </View>
 
         {/* Botón */}
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>INGRESAR</Text>
-        </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+        <Text style={styles.buttonText}>INGRESAR</Text>
+      </TouchableOpacity>
       </LinearGradient>
 
       {/* Enlace */}
-      <TouchableOpacity>
+      {/* <TouchableOpacity>
         <Text style={styles.forgotPassword}>¿Olvidó su contraseña?</Text>
+      </TouchableOpacity> */}
+      <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+        <Text style={styles.signUpText}>¿No tienes cuenta aún? Regístrate</Text>
       </TouchableOpacity>
     </LinearGradient>
   );
@@ -141,7 +181,7 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   button: {
-    backgroundColor: "#1ed760",
+    backgroundColor: "#05f7c2ff",
     paddingVertical: 12,
     borderRadius: 25,
     alignItems: "center",
@@ -149,7 +189,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 70,
   },
   buttonText: {
-    color: "#fff",
+    color: "#000000ff",
     fontSize: 16,
     fontWeight: "bold",
   },
@@ -158,5 +198,10 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 14,
     textDecorationLine: "underline",
+  },
+
+  signUpText: {
+    marginTop: 20,
+    color: '#ffffffff',
   },
 });

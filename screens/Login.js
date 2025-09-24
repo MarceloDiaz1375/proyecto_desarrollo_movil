@@ -14,26 +14,26 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../src/config/firebaseConfig';
 
 export default function Login({ navigation }) {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async () => {
-    if (!username || !password) {
+    if (!email || !password) {
       Alert.alert("Error", "Por favor ingrese ambos campos.");
       return;
     }
 
     try {
-      await signInWithEmailAndPassword(auth, username, password);
+      await signInWithEmailAndPassword(auth, email, password);
       Alert.alert("Login exitoso", "Has iniciado sesión correctamente.");
       navigation.reset({ index: 0, routes: [{ name: 'Home' }] }); 
     } catch (error) {
       let errorMessage = "Hubo un problema al iniciar sesión.";
       switch (error.code) {
-        // case 'auth/invalid-email':
-        //   errorMessage = "El formato del correo electrónico no es válido.";
-        //   break;
+        case 'auth/invalid-email':
+          errorMessage = "El formato del correo electrónico no es válido.";
+          break;
         case 'auth/wrong-password':
           errorMessage = "La contraseña es incorrecta.";
           break;
@@ -67,13 +67,13 @@ export default function Login({ navigation }) {
         // end={{ x: 1, y: 1 }}
       >
         {/* Usuario */}
-        <Text style={styles.label}> <FontAwesome name="user" size={18} color="#ffffffff" style={styles.icon} /> Usuario</Text>
+        <Text style={styles.label}> <FontAwesome name="envelope" size={18} color="#ffffffff" style={styles.icon} /> Correo</Text>
         <View style={styles.inputGroup}>
           <TextInput
             style={styles.input}
-            placeholder="Nombre de usuario"
-            value={username}
-            onChangeText={setUsername}
+            placeholder="Correo electronico"
+            value={email}
+            onChangeText={setEmail}
             keyboardType="default"
             autoCapitalize="none"
           />
@@ -102,9 +102,9 @@ export default function Login({ navigation }) {
         </View>
 
         {/* Botón */}
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>INGRESAR</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+          <Text style={styles.buttonText}>INGRESAR</Text>
+        </TouchableOpacity>
       </LinearGradient>
 
       {/* Enlace */}

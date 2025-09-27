@@ -1,35 +1,52 @@
-import React, { useEffect, useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+
+import Home from '../screens/Home';
+
+import React, { useState, useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { onAuthStateChanged } from 'firebase/auth';  
-import { auth } from '../src/config/firebaseConfig';  
+import { NavigationContainer } from '@react-navigation/native';
+import { onAuthStateChanged } from 'firebase/auth';  
+import { auth } from '../src/config/firebaseConfig';  
 import Login from '../screens/Login';
 import SignUp from '../screens/SignUp';
-import Home from '../screens/Home';
+// Importa el nuevo componente que contiene el menú inferior
+import AppTabs from './AppTabs'; 
 
 const Stack = createStackNavigator();
 
 function Navigation() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, user => {
-      if (user) {
-        setIsAuthenticated(true); 
-      } else {
-        setIsAuthenticated(false); 
-      }
+      setIsAuthenticated(!!user); // Simplifica la asignación
+      setLoading(false); 
     });
 
     return () => unsubscribe();
   }, []);
 
+  // Muestra una pantalla de carga mientras Firebase verifica el estado inicial
+  if (loading) {
+    return null; // En una app real, aquí va un Splash Screen o Spinner
+  }
+
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={isAuthenticated ? "Home" : "Login"}>
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="SignUp" component={SignUp} />
-        <Stack.Screen name="Home" component={Home} />
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        {isAuthenticated ? (
+          // === ESTADO AUTENTICADO: MUESTRA LA APLICACIÓN PRINCIPAL ===
+          // Renderiza el AppTabs, que contiene el Bottom Tab Navigator.
+          // Cualquier navegación dentro de AppTabs tendrá el menú inferior.
+          <Stack.Screen name="App" component={AppTabs} />
+        ) : (
+          // === ESTADO NO AUTENTICADO: MUESTRA EL STACK DE AUTENTICACIÓN ===
+          // Estas pantallas NO tendrán el menú inferior.
+          <>
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="SignUp" component={SignUp} />
+          </>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );

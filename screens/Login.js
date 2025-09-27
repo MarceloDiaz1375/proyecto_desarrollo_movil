@@ -12,6 +12,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome } from "@expo/vector-icons";
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../src/config/firebaseConfig';
+// No necesitamos 'useNavigation' ni 'StackActions' si usamos el observador de Firebase
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState('');
@@ -25,9 +26,17 @@ export default function Login({ navigation }) {
     }
 
     try {
+      // 1. Inicia sesión con Firebase.
       await signInWithEmailAndPassword(auth, email, password);
-      Alert.alert("Login exitoso", "Has iniciado sesión correctamente.");
-      navigation.reset({ index: 0, routes: [{ name: 'Home' }] }); 
+
+      // 2. ¡ELIMINAR LA NAVEGACIÓN MANUAL!
+      // El componente <Navigation/> principal detectará automáticamente
+      // este cambio de estado (a través de onAuthStateChanged) y
+      // redirigirá al usuario a AppTabs.
+      
+      // Opcional: Puedes dejar la alerta o eliminarla para un flujo más limpio.
+      // Alert.alert("Login exitoso", "Has iniciado sesión correctamente."); 
+
     } catch (error) {
       let errorMessage = "Hubo un problema al iniciar sesión.";
       switch (error.code) {
@@ -35,22 +44,25 @@ export default function Login({ navigation }) {
           errorMessage = "El formato del correo electrónico no es válido.";
           break;
         case 'auth/wrong-password':
-          errorMessage = "La contraseña es incorrecta.";
-          break;
         case 'auth/user-not-found':
-          errorMessage = "No se encontró un usuario con este correo.";
+          // Combinamos los errores de usuario no encontrado y contraseña incorrecta
+          // para mayor seguridad, sin revelar detalles del backend.
+          errorMessage = "Credenciales inválidas. Por favor verifique su correo y contraseña.";
           break;
         case 'auth/network-request-failed':
           errorMessage = "Error de conexión, por favor intenta más tarde.";
           break;
+        default:
+          errorMessage = error.message;
       }
       Alert.alert("Error", errorMessage);
     }
   };
-
+// ... (El resto del componente `return` y `styles` permanece igual)
+// ...
   return (
     <LinearGradient colors={["#4a56e2", "#64bae8"]} style={styles.container}>
-      {/* Logo */}
+      {/* ... (Contenido visual del Login) ... */}
       <View style={styles.logoContainer}>
         <Image
           source={require("../assets/copia.png")}
@@ -59,12 +71,9 @@ export default function Login({ navigation }) {
         />
       </View>
 
-      {/* Card de login */}
       <LinearGradient
         colors={["#43a4e8", "#314ed9"]}
         style={styles.card}
-        // start={{ x: 0, y: 0 }}
-        // end={{ x: 1, y: 1 }}
       >
         {/* Usuario */}
         <Text style={styles.label}> <FontAwesome name="envelope" size={18} color="#ffffffff" style={styles.icon} /> Correo</Text>
@@ -107,10 +116,7 @@ export default function Login({ navigation }) {
         </TouchableOpacity>
       </LinearGradient>
 
-      {/* Enlace */}
-      {/* <TouchableOpacity>
-        <Text style={styles.forgotPassword}>¿Olvidó su contraseña?</Text>
-      </TouchableOpacity> */}
+      {/* Enlace de Registro */}
       <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
         <Text style={styles.signUpText}>¿No tienes cuenta aún? Regístrate</Text>
       </TouchableOpacity>
@@ -119,89 +125,90 @@ export default function Login({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  logoContainer: {
-    width: 200,
-    height: 200,
-    borderRadius: 100,
-    backgroundColor: "#fff",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: -100,
-    marginBottom: 60,
-    shadowColor: "#000",
-    shadowOpacity: 0.25,
-    shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 6,
-    elevation: 6,
-  },
-  logo: {
-    width: "100%",
-    height: "100%",
-  },
-  card: {
-    width: "85%",
-    borderRadius: 12,
-    padding: 20,
-    shadowColor: "#000",
-    shadowOpacity: 0.2,
-    shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 6,
-    elevation: 6,
-    marginBottom: 20,
-  },
-  label: {
-    fontSize: 14,
-    fontWeight: "bold",
-    color: "#fff",
-    marginBottom: 5,
-  },
-  inputGroup: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#fff",
-    borderRadius: 8,
-    marginBottom: 15,
-    paddingHorizontal: 10,
-  },
-  icon: {
-    marginRight: 8,
-  },
-  input: {
-    flex: 1,
-    height: 45,
-    fontSize: 14,
-    color: "#333",
-  },
-  eyeButton: {
-    padding: 5,
-  },
-  button: {
-    backgroundColor: "#05f7c2ff",
-    paddingVertical: 12,
-    borderRadius: 25,
-    alignItems: "center",
-    marginTop: 10,
-    marginHorizontal: 70,
-  },
-  buttonText: {
-    color: "#000000ff",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  forgotPassword: {
-    marginTop: 10,
-    color: "#fff",
-    fontSize: 14,
-    textDecorationLine: "underline",
-  },
-
-  signUpText: {
-    marginTop: 20,
-    color: '#ffffffff',
-  },
+    // ... (Tu código de estilos aquí) ...
+    container: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+      },
+      logoContainer: {
+        width: 200,
+        height: 200,
+        borderRadius: 100,
+        backgroundColor: "#fff",
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: -100,
+        marginBottom: 60,
+        shadowColor: "#000",
+        shadowOpacity: 0.25,
+        shadowOffset: { width: 0, height: 4 },
+        shadowRadius: 6,
+        elevation: 6,
+      },
+      logo: {
+        width: "100%",
+        height: "100%",
+      },
+      card: {
+        width: "85%",
+        borderRadius: 12,
+        padding: 20,
+        shadowColor: "#000",
+        shadowOpacity: 0.2,
+        shadowOffset: { width: 0, height: 4 },
+        shadowRadius: 6,
+        elevation: 6,
+        marginBottom: 20,
+      },
+      label: {
+        fontSize: 14,
+        fontWeight: "bold",
+        color: "#fff",
+        marginBottom: 5,
+      },
+      inputGroup: {
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: "#fff",
+        borderRadius: 8,
+        marginBottom: 15,
+        paddingHorizontal: 10,
+      },
+      icon: {
+        marginRight: 8,
+      },
+      input: {
+        flex: 1,
+        height: 45,
+        fontSize: 14,
+        color: "#333",
+      },
+      eyeButton: {
+        padding: 5,
+      },
+      button: {
+        backgroundColor: "#05f7c2ff",
+        paddingVertical: 12,
+        borderRadius: 25,
+        alignItems: "center",
+        marginTop: 10,
+        marginHorizontal: 70,
+      },
+      buttonText: {
+        color: "#000000ff",
+        fontSize: 16,
+        fontWeight: "bold",
+      },
+      forgotPassword: {
+        marginTop: 10,
+        color: "#fff",
+        fontSize: 14,
+        textDecorationLine: "underline",
+      },
+    
+      signUpText: {
+        marginTop: 20,
+        color: '#ffffffff',
+      },
 });

@@ -17,7 +17,7 @@ export default function Home2({ navigation }) {
   };
 
   return (
-    <LinearGradient colors={["#bd12e7ff", "#64bae8"]} style={styles.container}>
+    <LinearGradient colors={["#4a56e2", "#64bae8"]} style={styles.container}>
       
         <Image source={require('../assets/logo.png')} style={styles.logo} />
         <Text style={styles.title}>Bienvenido a la aplicación</Text>
@@ -35,7 +35,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#ffffffff',
   },
   logo: {
     width: 200,

@@ -1,5 +1,5 @@
 
-import Home from '../screens/Home';
+import Home from '../screens/Home2';
 
 import React, { useState, useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';

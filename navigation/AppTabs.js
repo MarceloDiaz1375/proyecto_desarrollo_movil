@@ -5,8 +5,8 @@ import { Ionicons } from '@expo/vector-icons'; // Para usar iconos
 // Importa otras pantallas que quieras en el menú inferior
 // import Perfil from '../screens/Perfil'; 
 // import Citas from '../screens/Citas';
+import Home2 from '../screens/Home2';
 import Home from '../screens/Home';
-import Home2 from '../screens/Home_copy';
 
 const Tab = createBottomTabNavigator();
 
@@ -22,7 +22,7 @@ function AppTabs() {
             iconName = focused ? 'home' : 'home-outline';
           } 
           // Agrega más rutas y sus iconos aquí si las tienes
-          else if (route.name === 'Home_copy') {
+          else if (route.name === 'Home2') {
             iconName = focused ? 'person' : 'person-outline';
           }
 
@@ -35,7 +35,7 @@ function AppTabs() {
       })}
     >
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Home_copy" component={Home2} />
+      <Tab.Screen name="Home2" component={Home2} />
       {/* <Tab.Screen name="Perfil" component={Perfil} /> */}
     </Tab.Navigator>
   );

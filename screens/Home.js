@@ -47,48 +47,49 @@ const TurnoCard = ({ hora, paciente, tratamiento }) => (
 );
 
 export default function Home() {
-  const userName = "Maria Eugenia"; // Nombre del usuario logeado
+  // const userName = "Maria Eugenia"; // Nombre del usuario logeado
 
   return (
     // <LinearGradient colors={['#109bebff', '#1022ebff']} style={styles.gradientBackground}>
-    <View style={styles.centenedorHeader}>
+    <View style={styles.contenedorHeader}>
       {/* SafeAreaView para iOS y StatusBar para Android */}
-      <SafeAreaView style={styles.safeArea}>
-        <StatusBar barStyle="light-content" backgroundColor="#4a56e2" />
 
-        {/* Header Superior */}
-        <View style={styles.header}>
-          <Text style={styles.welcomeText}>¡Bienvenida, {userName}!</Text>
-          <TouchableOpacity style={styles.notificationButton}>
-            <Ionicons name="notifications-outline" size={24} color="#fff" />
-          </TouchableOpacity>
+      <StatusBar barStyle="light-content" backgroundColor="#109bebff" />
+
+      {/* Header Superior */}
+      <View style={styles.header}>
+        {/* <Text style={styles.welcomeText}>¡Bienvenida, {userName}!</Text> */}
+        <Text style={styles.welcomeText}>¡Bienvenido/a!</Text>
+        <TouchableOpacity style={styles.notificationButton}>
+          <Ionicons name="notifications-outline" size={24} color="#fff" />
+        </TouchableOpacity>
+      </View>
+
+      {/* Contenedor de Turnos */}
+      <View style={styles.contentContainer}>
+        <View style={styles.turnosHeader}>
+          <Text style={styles.turnosHeaderText}>Turnos para hoy</Text>
         </View>
 
-        {/* Contenedor de Turnos */}
-        <View style={styles.contentContainer}>
-          <View style={styles.turnosHeader}>
-            <Text style={styles.turnosHeaderText}>Turnos para hoy</Text>
-          </View>
+        {/* Lista de Turnos */}
+        <LinearGradient colors={['#2233e6ff', '#22e9beff']} style={styles.gradientTurnosList}>
+          <FlatList
+            data={turnosData}
+            renderItem={({ item }) => <TurnoCard {...item} />}
+            keyExtractor={item => item.id}
+            contentContainerStyle={styles.turnosList}
+            showsVerticalScrollIndicator={false} // Oculta la barra de scroll
+          />
+        </LinearGradient>
+      </View>
 
-          {/* Lista de Turnos */}
-          <LinearGradient colors={['#2233e6ff', '#22e9beff']} style={styles.gradientTurnosList}>
-            <FlatList
-              data={turnosData}
-              renderItem={({ item }) => <TurnoCard {...item} />}
-              keyExtractor={item => item.id}
-              contentContainerStyle={styles.turnosList}
-              showsVerticalScrollIndicator={false} // Oculta la barra de scroll
-            />
-          </LinearGradient>
-        </View>
-      </SafeAreaView>
     </View>
     // </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  centenedorHeader: {
+  contenedorHeader: {
     flex: 1,
     backgroundColor: '#109bebff',
   },
@@ -125,7 +126,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#2233e6ff',
   },
   gradientTurnosList: {
-    paddingVertical: 15,
+    paddingVertical: 2,
     alignItems: 'center',
     flex: 1,
   },

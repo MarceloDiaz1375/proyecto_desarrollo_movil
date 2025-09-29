@@ -4,6 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons'; // Para el icono de campana
 import { Button } from 'react-native-web';
 import { FontAwesome } from '@expo/vector-icons';
+import NuevoPaciente from './NuevoPaciente';
 
 // Datos de ejemplo para los turnos
 const turnosData = [
@@ -68,7 +69,7 @@ const PacienteCard = ({ nombre, telefono, correo }) => (
   </View>
 );
 
-export default function Pacientes() {
+export default function Pacientes({ navigation }) {
   // const userName = "Maria Eugenia"; // Nombre del usuario logeado
 
   return (
@@ -112,6 +113,7 @@ export default function Pacientes() {
       </View>
             <TouchableOpacity
         style={styles.fabButton}
+        onPress={() => navigation.navigate('NuevoPaciente')}
       >
         <Ionicons name="add" size={30} color="#fff" />
       </TouchableOpacity>

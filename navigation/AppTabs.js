@@ -7,6 +7,7 @@ import { Ionicons } from '@expo/vector-icons'; // Para usar iconos
 // import Citas from '../screens/Citas';
 import Home from '../screens/Home';
 import Pacientes from '../screens/Pacientes';
+import NuevoPaciente from '../screens/NuevoPaciente';
 
 
 const Tab = createBottomTabNavigator();
@@ -37,6 +38,7 @@ function AppTabs() {
     >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Pacientes" component={Pacientes} />
+      {/* <Stack.Screen name="NuevoPaciente" component={NuevoPaciente} /> */}
       {/* <Tab.Screen name="Perfil" component={Perfil} /> */}
     </Tab.Navigator>
   );

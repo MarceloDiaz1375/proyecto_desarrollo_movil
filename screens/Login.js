@@ -12,6 +12,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome } from "@expo/vector-icons";
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../src/config/firebaseConfig';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 // No necesitamos 'useNavigation' ni 'StackActions' si usamos el observador de Firebase
 
 export default function Login({ navigation }) {
@@ -61,66 +62,72 @@ export default function Login({ navigation }) {
 // ... (El resto del componente `return` y `styles` permanece igual)
 // ...
   return (
-    <LinearGradient colors={["#4a56e2", "#64bae8"]} style={styles.container}>
-      {/* ... (Contenido visual del Login) ... */}
-      <View style={styles.logoContainer}>
-        <Image
-          source={require("../assets/copia.png")}
-          style={styles.logo}
-          resizeMode="contain"
-        />
-      </View>
-
-      <LinearGradient
-        colors={["#43a4e8", "#314ed9"]}
-        style={styles.card}
+    <KeyboardAwareScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        enableOnAndroid={true}
+        extraScrollHeight={10}
       >
-        {/* Usuario */}
-        <Text style={styles.label}> <FontAwesome name="envelope" size={18} color="#ffffffff" style={styles.icon} /> Correo</Text>
-        <View style={styles.inputGroup}>
-          <TextInput
-            style={styles.input}
-            placeholder="Correo electronico"
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="default"
-            autoCapitalize="none"
+      <LinearGradient colors={["#4a56e2", "#64bae8"]} style={styles.container}>
+        {/* ... (Contenido visual del Login) ... */}
+        <View style={styles.logoContainer}>
+          <Image
+            source={require("../assets/copia.png")}
+            style={styles.logo}
+            resizeMode="contain"
           />
         </View>
 
-        {/* Contraseña */}
-        <Text style={styles.label}> <FontAwesome name="key" size={18} color="#ffffffff" style={styles.icon} /> Contraseña</Text>
-        <View style={styles.inputGroup}>
-          <TextInput
-            style={styles.input}
-            placeholder="Ingrese su contraseña"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry={!showPassword}
-          />
-          <TouchableOpacity
-            onPress={() => setShowPassword(!showPassword)}
-            style={styles.eyeButton}
-          >
-            <FontAwesome
-              name={showPassword ? "eye-slash" : "eye"}
-              size={18}
-              color="#555"
+        <LinearGradient
+          colors={["#43a4e8", "#314ed9"]}
+          style={styles.card}
+        >
+          {/* Usuario */}
+          <Text style={styles.label}> <FontAwesome name="envelope" size={18} color="#ffffffff" style={styles.icon} /> Correo</Text>
+          <View style={styles.inputGroup}>
+            <TextInput
+              style={styles.input}
+              placeholder="Correo electronico"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="default"
+              autoCapitalize="none"
             />
-          </TouchableOpacity>
-        </View>
+          </View>
 
-        {/* Botón */}
-        <TouchableOpacity style={styles.button} onPress={handleLogin}>
-          <Text style={styles.buttonText}>INGRESAR</Text>
+          {/* Contraseña */}
+          <Text style={styles.label}> <FontAwesome name="key" size={18} color="#ffffffff" style={styles.icon} /> Contraseña</Text>
+          <View style={styles.inputGroup}>
+            <TextInput
+              style={styles.input}
+              placeholder="Ingrese su contraseña"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry={!showPassword}
+            />
+            <TouchableOpacity
+              onPress={() => setShowPassword(!showPassword)}
+              style={styles.eyeButton}
+            >
+              <FontAwesome
+                name={showPassword ? "eye-slash" : "eye"}
+                size={18}
+                color="#555"
+              />
+            </TouchableOpacity>
+          </View>
+
+          {/* Botón */}
+          <TouchableOpacity style={styles.button} onPress={handleLogin}>
+            <Text style={styles.buttonText}>INGRESAR</Text>
+          </TouchableOpacity>
+        </LinearGradient>
+
+        {/* Enlace de Registro */}
+        <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+          <Text style={styles.signUpText}>¿No tienes cuenta aún? Regístrate</Text>
         </TouchableOpacity>
       </LinearGradient>
-
-      {/* Enlace de Registro */}
-      <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-        <Text style={styles.signUpText}>¿No tienes cuenta aún? Regístrate</Text>
-      </TouchableOpacity>
-    </LinearGradient>
+    </KeyboardAwareScrollView>
   );
 }
 

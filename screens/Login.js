@@ -65,7 +65,7 @@ export default function Login({ navigation }) {
     <KeyboardAwareScrollView
         contentContainerStyle={{ flexGrow: 1 }}
         enableOnAndroid={true}
-        extraScrollHeight={10}
+        extraScrollHeight={5}
       >
       <LinearGradient colors={["#4a56e2", "#64bae8"]} style={styles.container}>
         {/* ... (Contenido visual del Login) ... */}

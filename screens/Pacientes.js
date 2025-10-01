@@ -112,9 +112,9 @@ export default function Pacientes({ navigation }) {
         </LinearGradient>
       </View>
             <TouchableOpacity
-        style={styles.fabButton}
-        onPress={() => navigation.navigate('NuevoPaciente')}
-      >
+            style={styles.fabButton}
+            onPress={() => navigation.navigate('NuevoPaciente')}
+          >
         <Ionicons name="add" size={30} color="#fff" />
       </TouchableOpacity>
     </View>
